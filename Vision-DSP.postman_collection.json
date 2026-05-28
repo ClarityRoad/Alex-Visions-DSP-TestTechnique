@@ -1,0 +1,358 @@
+{
+  "info": {
+    "_postman_id": "4568647a-5ffc-4826-85ae-5b1275bf11ce",
+    "name": "Vision - DSP",
+    "description": "Vision - Test Technique - Alex Cailleau",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55311108",
+    "_collection_link": "https://go.postman.co/collection/55311108-4568647a-5ffc-4826-85ae-5b1275bf11ce?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Negotiation",
+      "item": [
+        {
+          "name": "(0) Negotiations FindBy providerPid",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "BearerToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/negotiations/906c18d7-2359-4f14-b0a6-842a4fd387c8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "negotiations",
+                "906c18d7-2359-4f14-b0a6-842a4fd387c8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "(0) Get All Negotiations",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "BearerToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/negotiations/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "negotiations",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1 Negotiations Request (REQUESTED + AGREED)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "pm.collectionVariables.set(\"providerPid\", jsonData.providerPid);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "BearerToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"@context\": [\n        \"https://w3id.org/dspace/2025/1/context.jsonld\"\n    ],\n    \"@type\": \"ContractRequestMessage\",\n    \"consumerPid\": \"urn:uuid:32541fe6-c580-409e-85a8-8a9a32fbe833\",\n    \"callbackAddress\": \"https://otherotherconsumer.web3.com/callback\",\n    \"offer\": {\n        \"@type\": \"Offer\",\n        \"@id\": \"urn:uuid:offer-bf67ee54-4888-44fb-bf04-872324306929\",\n        \"target\": \"urn:uuid:60c90014-604f-4096-8ede-b1ff02282f6d\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/negotiations/request",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "negotiations",
+                "request"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2 Negotiation Events (ACCEPTED)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "BearerToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"@context\": [\"https://w3id.org/dspace/2025/1/context.jsonld\"],\n  \"@type\": \"ContractNegotiationEventMessage\",\n  \"consumerPid\": \"urn:uuid:32541fe6-c580-409e-85a8-8a9a32fbe833\",\n  \"providerPid\": \"906c18d7-2359-4f14-b0a6-842a4fd387c8\",\n  \"eventType\": \"ACCEPTED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/negotiations/{{providerPid}}/events",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "negotiations",
+                "{{providerPid}}",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3 Negotiation Agreement Verification (VERIFIED + FINALIZED)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "BearerToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"@context\": [\"https://w3id.org/dspace/2025/1/context.jsonld\"],\n  \"@type\": \"ContractNegotiationEventMessage\",\n  \"consumerPid\": \"urn:uuid:32541fe6-c580-409e-85a8-8a9a32fbe833\",\n  \"providerPid\": \"df8910bc-fd48-43de-ac03-71060aaf2321\",\n  \"eventType\": \"VERIFIED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/negotiations/{{providerPid}}/agreement/verification",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "negotiations",
+                "{{providerPid}}",
+                "agreement",
+                "verification"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4 Negotiation Termination",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "BearerToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"@context\": [\"https://w3id.org/dspace/2025/1/context.jsonld\"],\n  \"@type\": \"ContractNegotiationEventMessage\",\n  \"consumerPid\": \"urn:uuid:32541fe6-c580-409e-85a8-8a9a32fbe833\",\n  \"providerPid\": \"df8910bc-fd48-43de-ac03-71060aaf2321\",\n  \"eventType\": \"TERMINATED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/negotiations/{{providerPid}}/termination",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "negotiations",
+                "{{providerPid}}",
+                "termination"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "BearerToken",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Version",
+      "item": [
+        {
+          "name": "dspace-version",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/.well-known/dspace-version",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                ".well-known",
+                "dspace-version"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Catalog",
+      "item": [
+        {
+          "name": "Catalog Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "BearerToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/catalog/request",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "catalog",
+                "request"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Catalog Dataset by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "BearerToken",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/catalog/datasets/urn:uuid:60c90014-604f-4096-8ede-b1ff02282f6d",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "catalog",
+                "datasets",
+                "urn:uuid:60c90014-604f-4096-8ede-b1ff02282f6d"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "BearerToken",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]
+}
